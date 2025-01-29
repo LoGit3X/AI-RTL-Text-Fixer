@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepSeek RTL Fixer</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
+    
+    body {
+      font-family: 'Inter', sans-serif;
+      padding: 15px;
+      width: 220px;
+      background: #1a1a1a;
+      color: #ffffff;
+      text-align: center;
+      margin: 0;
+    }
+
+    .container {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .status {
+      font-size: 1.1em;
+      padding: 8px;
+      border-radius: 8px;
+      background: #2d2d2d;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+
+    button {
+      padding: 12px 20px;
+      border: none;
+      border-radius: 8px;
+      background: #2d2d2d;
+      color: #00ff9d;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid #00ff9d33;
+      box-shadow: 0 2px 8px rgba(0, 255, 157, 0.1);
+    }
+
+    button:hover {
+      background: #00ff9d1a;
+      box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
+      transform: translateY(-1px);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .signature {
+      margin-top: 15px;
+      font-size: 0.9em;
+      color: #888;
+    }
+
+    .signature a {
+      color: #00ff9d;
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+
+    .signature a:hover {
+      color: #00cc7a;
+    }
+
+    #statusText {
+      color: #00ff9d;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="status">
+      Status: <span id="statusText">Enabled</span>
+    </div>
+    
+    <button id="toggleExtension">Disable Extension</button>
+    <button id="refreshPage">Refresh Page</button>
+    
+    <p class="signature">
+      <a href="https://github.com/LoGit3X" target="_blank">
+        Made By LoGiT3X with 🧡
+      </a>
+    </p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
