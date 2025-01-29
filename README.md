@@ -2,7 +2,7 @@
 DeepSeek Text Direction Fixer
 
 
-![Image](https://github.com/user-attachments/assets/6f9c83d3-b913-44fe-aa92-eb193aa29c69)
+![Image](https://github.com/user-attachments/assets/e8744e95-50a6-4227-8db5-dba420b1473c)
 
 
 این افزونه کروم به شما کمک می‌کنه تا جهت متن‌های فارسی و انگلیسی رو به‌صورت خودکار توی Deepseek تنظیم کنید. برای مثال، وقتی متن فارسی دارید، به‌طور خودکار راست‌چین میشه و وقتی متن انگلیسی دارید، چپ‌چین میشه ، همچنین توی چت باکس DeepSeek وقتی فارسی مینویسید از راست به چپ مینویسه!
