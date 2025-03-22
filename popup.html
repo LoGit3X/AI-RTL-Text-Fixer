@@ -1,98 +1,273 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DeepSeek RTL Fixer</title>
+  <title>AI Chat Text Direction Fixer</title>
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap');
-    
     body {
-      font-family: 'Inter', sans-serif;
-      padding: 15px;
-      width: 220px;
-      background: #1a1a1a;
-      color: #ffffff;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      width: 300px;
+      padding: 16px;
+      background-color: #f9f9f9;
+      color: #333;
+    }
+    h1 {
+      font-size: 18px;
       text-align: center;
+      color: #4285f4;
+      margin-top: 0;
+      margin-bottom: 16px;
+    }
+    .toggle-container {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+      padding: 10px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    .toggle-label {
+      font-weight: 500;
+      font-size: 14px;
+    }
+    .toggle {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 26px;
+    }
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+      border-radius: 34px;
+    }
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 4px;
+      bottom: 4px;
+      background-color: white;
+      transition: .4s;
+      border-radius: 50%;
+    }
+    input:checked + .slider {
+      background-color: #4285f4;
+    }
+    input:checked + .slider:before {
+      transform: translateX(24px);
+    }
+    .platforms {
+      background-color: white;
+      border-radius: 8px;
+      padding: 10px;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+      margin-bottom: 16px;
+    }
+    .platforms-title {
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .platform-list {
+      list-style-type: none;
+      padding-left: 0;
       margin: 0;
     }
-
-    .container {
+    .platform-item {
       display: flex;
-      flex-direction: column;
-      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 0;
+      border-bottom: 1px solid #eee;
     }
-
-    .status {
-      font-size: 1.1em;
+    .platform-item:last-child {
+      border-bottom: none;
+    }
+    .platform-name {
+      font-size: 13px;
+      color: #333;
+    }
+    .platform-domain {
+      font-size: 11px;
+      color: #666;
+      display: block;
+    }
+    .footer {
+      font-size: 12px;
+      text-align: center;
+      color: #666;
+      margin-top: 8px;
+    }
+    .search-box {
+      width: 100%;
       padding: 8px;
-      border-radius: 8px;
-      background: #2d2d2d;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      margin-bottom: 10px;
+      font-size: 13px;
     }
-
-    button {
-      padding: 12px 20px;
+    .search-box:focus {
+      outline: none;
+      border-color: #4285f4;
+    }
+    .refresh-button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding: 10px;
+      background-color: #4285f4;
+      color: white;
       border: none;
       border-radius: 8px;
-      background: #2d2d2d;
-      color: #00ff9d;
-      font-weight: 600;
+      font-size: 14px;
+      font-weight: 500;
       cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid #00ff9d33;
-      box-shadow: 0 2px 8px rgba(0, 255, 157, 0.1);
+      transition: background-color 0.2s;
+      margin-bottom: 16px;
+      gap: 8px;
     }
-
-    button:hover {
-      background: #00ff9d1a;
-      box-shadow: 0 4px 12px rgba(0, 255, 157, 0.2);
-      transform: translateY(-1px);
+    .refresh-button:hover {
+      background-color: #3367d6;
     }
-
-    button:disabled {
-      opacity: 0.6;
-      cursor: not-allowed;
+    .refresh-button:active {
+      background-color: #2850a7;
     }
-
-    .signature {
-      margin-top: 15px;
-      font-size: 0.9em;
-      color: #888;
-    }
-
-    .signature a {
-      color: #00ff9d;
-      text-decoration: none;
-      transition: color 0.3s ease;
-    }
-
-    .signature a:hover {
-      color: #00cc7a;
-    }
-
-    #statusText {
-      color: #00ff9d;
-      font-weight: bold;
+    .refresh-button svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="status">
-      Status: <span id="statusText">Enabled</span>
-    </div>
-    
-    <button id="toggleExtension">Disable Extension</button>
-    <button id="refreshPage">Refresh Page</button>
-    
-    <p class="signature">
-      <a href="https://github.com/LoGit3X" target="_blank">
-        Made By LoGiT3X with 🧡
-      </a>
-    </p>
+  <h1>AI Chat Text Direction Fixer</h1>
+  
+  <div class="toggle-container">
+    <span class="toggle-label">Enable Extension</span>
+    <label class="toggle">
+      <input type="checkbox" id="toggle-extension" checked>
+      <span class="slider"></span>
+    </label>
   </div>
-
+  
+  <button class="refresh-button" id="refresh-page">
+    <svg viewBox="0 0 24 24">
+      <path d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+    </svg>
+    Refresh Page
+  </button>
+  
+  <div class="platforms">
+    <div class="platforms-title">
+      <span>Supported Platforms</span>
+      <input type="text" class="search-box" placeholder="Search platforms..." id="search-platforms">
+    </div>
+    <ul class="platform-list" id="platform-list">
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">ChatGPT</span>
+          <span class="platform-domain">chat.openai.com</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="chat.openai.com" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">DeepSeek Chat</span>
+          <span class="platform-domain">deepseek.com</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="deepseek.com" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Perplexity</span>
+          <span class="platform-domain">perplexity.ai</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="perplexity.ai" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Grok (X/Twitter)</span>
+          <span class="platform-domain">x.com/i/grok</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="x.com" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Grok</span>
+          <span class="platform-domain">grok.com</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="grok.com" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Google AI Studio</span>
+          <span class="platform-domain">aistudio.google.com</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="aistudio.google.com" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Claude</span>
+          <span class="platform-domain">claude.ai</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="claude.ai" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+      <li class="platform-item">
+        <div>
+          <span class="platform-name">Qwen</span>
+          <span class="platform-domain">chat.qwenlm.ai</span>
+        </div>
+        <label class="toggle">
+          <input type="checkbox" data-domain="chat.qwenlm.ai" checked>
+          <span class="slider"></span>
+        </label>
+      </li>
+    </ul>
+  </div>
+  
+  <div class="footer">
+    AI Chat Text Direction Fixer - v1.0
+  </div>
+  
   <script src="popup.js"></script>
 </body>
 </html>

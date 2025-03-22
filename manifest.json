@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "DeepSeek Text Direction Fixer",
+  "name": "AI Chat Text Direction Fixer",
   "version": "1.0",
-  "description": "Applies correct text direction for Persian and English in DeepSeek Chat",
+  "description": "Applies correct text direction for Persian and English in various AI chat platforms",
   "icons": {
     "16": "icon16.png",
     "48": "icon48.png",
@@ -19,7 +19,17 @@
   },
   "content_scripts": [
     {
-      "matches": ["*://*.deepseek.com/*"],
+      "matches": [
+        "*://*.deepseek.com/*",
+        "*://chat.openai.com/*",
+        "*://*.perplexity.ai/*",
+        "*://*.x.com/i/grok*",
+        "*://grok.x.ai/*",
+        "*://grok.com/chat*",
+        "*://aistudio.google.com/live*",
+        "*://claude.ai/*",
+        "*://chat.qwenlm.ai/*"
+      ],
       "js": ["content.js"],
       "run_at": "document_end"
     }
