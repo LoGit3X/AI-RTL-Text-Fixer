@@ -4,17 +4,17 @@
   "version": "1.0",
   "description": "Applies correct text direction for Persian and English in various AI chat platforms",
   "icons": {
-    "16": "icon16.png",
-    "48": "icon48.png",
-    "128": "icon128.png"
+    "16": "./src/icons/icon16.png",
+    "48": "./src/icons/icon48.png",
+    "128": "./src/icons/icon128.png"
   },
   "permissions": ["storage", "activeTab", "scripting"],
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "./src/html/popup.html",
     "default_icon": {
-      "16": "icon16.png",
-      "48": "icon48.png",
-      "128": "icon128.png"
+      "16": "./src/icons/icon16.png",
+      "48": "./src/icons/icon48.png",
+      "128": "./src/icons/icon128.png"
     }
   },
   "content_scripts": [
@@ -30,11 +30,11 @@
         "*://claude.ai/*",
         "*://chat.qwenlm.ai/*"
       ],
-      "js": ["content.js"],
+      "js": ["/src/scripts/content.js"],
       "run_at": "document_end"
     }
   ],
   "background": {
-    "service_worker": "background.js"
+    "service_worker": "/src/scripts/background.js"
   }
 }
