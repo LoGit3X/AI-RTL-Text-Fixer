@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "ChatBot RTL",
-  "version": "1.0",
+  "version": "0.2.0",
   "description": "Applies correct text direction for Persian and English in various AI chat platforms",
   "icons": {
     "16": "./src/icons/icon16.png",

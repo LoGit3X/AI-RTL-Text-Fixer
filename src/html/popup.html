@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>ChatBot RTL</title>
+    <title>AI RTL Guardian</title>
     <link rel="stylesheet" href="../styles/popup.css" />
   </head>
   <body>
     <header class="popup__header">
       <div class="popup__header-left">
         <img src="../icons/icon19.png" alt="Logo" class="popup__header-logo" />
-        <span class="popup__header-title">ChatBot RTL</span>
+        <span class="popup__header-title">AI RTL Guardian</span>
       </div>
       <div class="popup__header-actions">
         <button id="theme-toggle" class="theme-toggle">
@@ -35,13 +35,6 @@
         </a>
       </div>
     </header>
-    <div class="toggle">
-      <span class="toggle__label">Enable Extension</span>
-      <label class="toggle__switch">
-        <input type="checkbox" id="toggle-extension" class="toggle__input" checked />
-        <span class="toggle__slider switch__btn"></span>
-      </label>
-    </div>
     <button class="refresh" id="refresh-page">
       <svg class="refresh__icon" viewBox="0 0 24 24">
         <path
@@ -52,13 +45,12 @@
     </button>
     <div class="platforms">
       <div class="platforms__header">
-        <span class="platforms__title">Search</span>
         <input type="text" class="platforms__search" placeholder="Search platforms..." id="search-platforms" />
       </div>
       <ul class="platforms__list" id="platform-list">
         <li class="platforms__item">
           <div class="platforms__item-content">
-            <img src="../assets/chatGpticon.png" alt="ChatGPT" class="platforms__icon" />
+            <img src="../assets/gpt-icon.png" alt="ChatGPT" class="platforms__icon" />
             <div class="platforms__info">
               <span class="platforms__name">ChatGPT</span>
               <span class="platforms__domain">chat.openai.com</span>
@@ -92,19 +84,6 @@
           </div>
           <label class="toggle__switch">
             <input type="checkbox" class="toggle__input" data-domain="perplexity.ai" checked />
-            <span class="toggle__slider"></span>
-          </label>
-        </li>
-        <li class="platforms__item">
-          <div class="platforms__item-content">
-            <img src="../assets/gork-icon.png" alt="Grok" class="platforms__icon" />
-            <div class="platforms__info">
-              <span class="platforms__name">Grok (X/Twitter)</span>
-              <span class="platforms__domain">x.com/i/grok</span>
-            </div>
-          </div>
-          <label class="toggle__switch">
-            <input type="checkbox" class="toggle__input" data-domain="x.com" checked />
             <span class="toggle__slider"></span>
           </label>
         </li>
@@ -149,7 +128,7 @@
         </li>
         <li class="platforms__item">
           <div class="platforms__item-content">
-            <img src="../assets/qwen-icon.jpg" alt="Qwen" class="platforms__icon" />
+            <img src="../assets/qwen-icon.webp" alt="Qwen" class="platforms__icon" />
             <div class="platforms__info">
               <span class="platforms__name">Qwen</span>
               <span class="platforms__domain">chat.qwenlm.ai</span>
@@ -160,9 +139,127 @@
             <span class="toggle__slider"></span>
           </label>
         </li>
+
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/Gemini-icon.png" alt="Bard" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Gemini</span>
+              <span class="platforms__domain">https://gemini.google.com/app</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="gemini.google.com/app" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/Copilot.webp" alt="Copilot" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Microsoft Copilot</span>
+              <span class="platforms__domain">copilot.microsoft.com</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="copilot.microsoft.com" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/poe-icon.png" alt="Poe" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Poe</span>
+              <span class="platforms__domain">poe.com</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="poe.com" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/huggingface-icon.svg" alt="HuggingChat" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">HuggingChat</span>
+              <span class="platforms__domain">huggingface.co/chat</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="huggingface.co" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/character-icon.png" alt="Character.AI" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Character.AI</span>
+              <span class="platforms__domain">character.ai</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="character.ai" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/you-icon.png" alt="You.com" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">You.com</span>
+              <span class="platforms__domain">you.com</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="you.com" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/pi-icon.jpg" alt="Pi" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Pi</span>
+              <span class="platforms__domain">pi.ai</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="pi.ai" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/phind-icon.avif" alt="Phind" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Phind</span>
+              <span class="platforms__domain">phind.com</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="phind.com" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/forefront-icon.png" alt="Forefront" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Forefront</span>
+              <span class="platforms__domain">forefront.ai</span>
+            </div>
+          </div>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="forefront.ai" checked />
+            <span class="toggle__slider"></span>
+          </label>
+        </li>
       </ul>
     </div>
-    <div class="popup__footer">ChatBot RTL - v1.0</div>
+    <div class="popup__footer">AI RTL Guardian - v0.2.0</div>
     <script src="../scripts/popup.js"></script>
   </body>
 </html>
