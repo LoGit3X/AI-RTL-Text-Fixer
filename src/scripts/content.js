@@ -1,17 +1,17 @@
 // Check if extension is enabled for current domain
 function checkIfEnabled(callback) {
   const currentDomain = window.location.hostname;
-  chrome.storage.local.get(['extensionEnabled', 'platformStates'], (result) => {
+  chrome.storage.local.get(['extensionEnabled', 'platformStates'], result => {
     const isExtensionEnabled = result.extensionEnabled !== false;
     const platformStates = result.platformStates || {};
-    const isPlatformEnabled = platformStates[currentDomain] !== false;
-    
+    const isPlatformEnabled = platformStates[currentDomain] === true;
+
     callback(isExtensionEnabled && isPlatformEnabled);
   });
 }
 
 // Initialize extension
-checkIfEnabled((isEnabled) => {
+checkIfEnabled(isEnabled => {
   if (isEnabled) {
     applyTextDirection(document.body);
     setupChatboxRTL();
@@ -23,7 +23,7 @@ checkIfEnabled((isEnabled) => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'toggleExtension') {
     if (message.enabled) {
-      checkIfEnabled((isEnabled) => {
+      checkIfEnabled(isEnabled => {
         if (isEnabled) {
           applyTextDirection(document.body);
           setupChatboxRTL();
@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const currentDomain = window.location.hostname;
     if (currentDomain.includes(message.domain)) {
       if (message.enabled) {
-        checkIfEnabled((isEnabled) => {
+        checkIfEnabled(isEnabled => {
           if (isEnabled) {
             applyTextDirection(document.body);
             setupChatboxRTL();
@@ -56,13 +56,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 // Function to apply RTL/LTR direction
 function applyTextDirection(element) {
   // First handle code blocks - always keep them LTR regardless of content
-  const codeElements = element.querySelectorAll('pre, code, .code-block, [class*="code"], [class*="hljs"], [class*="language-"], div[class*="Code"], [data-language], .CodeMirror, [role="code"], [class*="syntaxHighlighter"], .token, .codejar');
+  const codeElements = element.querySelectorAll(
+    'pre, code, .code-block, [class*="code"], [class*="hljs"], [class*="language-"], div[class*="Code"], [data-language], .CodeMirror, [role="code"], [class*="syntaxHighlighter"], .token, .codejar'
+  );
   codeElements.forEach(codeElem => {
     if (codeElem) {
       codeElem.style.setProperty('direction', 'ltr', 'important');
       codeElem.style.setProperty('text-align', 'left', 'important');
       codeElem.style.setProperty('unicode-bidi', 'isolate', 'important');
-      
+
       // Also force all children of code blocks to be LTR
       const children = codeElem.querySelectorAll('*');
       children.forEach(child => {
@@ -74,7 +76,9 @@ function applyTextDirection(element) {
   });
 
   // Handle code block titles and numbered headings specially
-  const codeBlockTitles = element.querySelectorAll('[class*="title"]:has(+ pre), [class*="title"]:has(+ .code-block), [class*="header"]:has(+ pre), h1:has(+ pre), h2:has(+ pre), h3:has(+ pre), h4:has(+ pre), h5:has(+ pre), h6:has(+ pre), div:has(+ pre), div:has(+ code), div:has(+ [class*="code"]), div:has(+ [class*="hljs"])');
+  const codeBlockTitles = element.querySelectorAll(
+    '[class*="title"]:has(+ pre), [class*="title"]:has(+ .code-block), [class*="header"]:has(+ pre), h1:has(+ pre), h2:has(+ pre), h3:has(+ pre), h4:has(+ pre), h5:has(+ pre), h6:has(+ pre), div:has(+ pre), div:has(+ code), div:has(+ [class*="code"]), div:has(+ [class*="hljs"])'
+  );
   codeBlockTitles.forEach(title => {
     if (title.textContent.trim()) {
       const isPersianText = isPersian(title.textContent);
@@ -90,7 +94,7 @@ function applyTextDirection(element) {
             if (numberMatch) {
               const [_, number, content] = numberMatch;
               title.innerHTML = `<span class="number-wrapper" style="unicode-bidi:isolate;direction:ltr;display:inline-block;margin-left:0.5em;font-family:inherit">${number}</span>${content}`;
-              
+
               // Force the number wrapper to stay LTR
               const wrapper = title.querySelector('.number-wrapper');
               if (wrapper) {
@@ -101,7 +105,7 @@ function applyTextDirection(element) {
               }
             }
           }
-          
+
           // Set the main title container to RTL
           title.style.setProperty('direction', 'rtl', 'important');
           title.style.setProperty('text-align', 'right', 'important');
@@ -120,11 +124,13 @@ function applyTextDirection(element) {
   });
 
   // Then handle lists, numbers and special elements
-  const listAndSpecialElements = element.querySelectorAll('li, ol, ul, .numbered-step, [class*="number"], [class*="list"], div:has(> ol), div:has(> ul)');
+  const listAndSpecialElements = element.querySelectorAll(
+    'li, ol, ul, .numbered-step, [class*="number"], [class*="list"], div:has(> ol), div:has(> ul)'
+  );
   listAndSpecialElements.forEach(elem => {
     // Skip if element is within a code block
     if (isInCodeBlock(elem)) return;
-    
+
     if (elem.textContent.trim()) {
       const isPersianText = isPersian(elem.textContent);
       if (isPersianText) {
@@ -141,11 +147,13 @@ function applyTextDirection(element) {
   });
 
   // Handle headers and specific platform elements
-  const headings = element.querySelectorAll('h1, h2, h3, h4, h5, h6, .text-lg, .text-xl, .text-2xl, [role="heading"], .title, .header, [class*="title"], [class*="header"]');
+  const headings = element.querySelectorAll(
+    'h1, h2, h3, h4, h5, h6, .text-lg, .text-xl, .text-2xl, [role="heading"], .title, .header, [class*="title"], [class*="header"]'
+  );
   headings.forEach(heading => {
     // Skip if element is within a code block
     if (isInCodeBlock(heading)) return;
-    
+
     if (heading.textContent.trim()) {
       const isPersianText = isPersian(heading.textContent);
       if (isPersianText) {
@@ -167,7 +175,7 @@ function applyTextDirection(element) {
   textContainers.forEach(container => {
     // Skip if element is within a code block
     if (isInCodeBlock(container)) return;
-    
+
     if (container.textContent.trim() && !container.matches('li, ol, ul, h1, h2, h3, h4, h5, h6, pre, code')) {
       const isPersianText = isPersian(container.textContent);
       if (isPersianText) {
@@ -179,22 +187,20 @@ function applyTextDirection(element) {
   });
 
   // Then handle all remaining text nodes
-  const walker = document.createTreeWalker(
-    element,
-    NodeFilter.SHOW_TEXT,
-    null,
-    false
-  );
+  const walker = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
 
   while (walker.nextNode()) {
     const node = walker.currentNode;
     if (node.nodeType === Node.TEXT_NODE && node.textContent.trim()) {
       const parent = node.parentElement;
       // Skip if parent is already processed or is a code element
-      if (parent.matches('li, ol, ul, h1, h2, h3, h4, h5, h6, p, .text-lg, .text-xl, .text-2xl, [role="heading"], pre, code, [class*="code"]') || isInCodeBlock(parent)) {
+      if (
+        parent.matches('li, ol, ul, h1, h2, h3, h4, h5, h6, p, .text-lg, .text-xl, .text-2xl, [role="heading"], pre, code, [class*="code"]') ||
+        isInCodeBlock(parent)
+      ) {
         continue;
       }
-      
+
       const isPersianText = isPersian(node.textContent);
       if (isPersianText) {
         parent.style.setProperty('direction', 'rtl', 'important');
@@ -209,9 +215,12 @@ function applyTextDirection(element) {
 function isInCodeBlock(element) {
   let current = element;
   while (current) {
-    if (current.matches && (
-        current.matches('pre, code, .code-block, [class*="code"], [class*="hljs"], [class*="language-"], div[class*="Code"], [data-language], .CodeMirror, [role="code"], [class*="syntaxHighlighter"], .token, .codejar')
-    )) {
+    if (
+      current.matches &&
+      current.matches(
+        'pre, code, .code-block, [class*="code"], [class*="hljs"], [class*="language-"], div[class*="Code"], [data-language], .CodeMirror, [role="code"], [class*="syntaxHighlighter"], .token, .codejar'
+      )
+    ) {
       return true;
     }
     current = current.parentElement;
@@ -224,7 +233,7 @@ function isPersian(text) {
   // Add support for Persian numbers and special characters
   const persianRegex = /[\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF\uFB50-\uFDFF\uFE70-\uFEFF]|[\u06F0-\u06F9]/;
   // If text contains Persian characters or is mixed with numbers in a Persian context
-  return persianRegex.test(text) || (text.trim().match(/^[\d\s\u0600-\u06FF]+$/));
+  return persianRegex.test(text) || text.trim().match(/^[\d\s\u0600-\u06FF]+$/);
 }
 
 // Function to set up RTL for chatbox
@@ -232,45 +241,45 @@ function setupChatboxRTL() {
   // Selectors for all AI chat platforms
   const selectors = [
     // ChatGPT
-    'textarea#prompt-textarea', 
+    'textarea#prompt-textarea',
     'div[contenteditable="true"]',
-    
+
     // DeepSeek
-    'textarea', 
+    'textarea',
     'input[type="text"]',
     '.cm-content',
     '.cm-line',
-    
+
     // Perplexity.ai
     '.ProseMirror',
     '.perplexity-input',
     '.input-wrapper textarea',
     'div[role="textbox"]',
-    
+
     // X.com/Grok
     '.public-DraftEditor-content',
     '.DraftEditor-editorContainer',
     'div[data-testid="tweetTextarea_0"]',
-    
+
     // grok.com/chat
     '.grok-chat-input',
     '.grok-input-field',
-    
+
     // Google AI Studio
     '.gemini-chat-input',
     '.gemini-text-entry',
     '.rta__textarea',
-    
+
     // Claude.ai
     '.claude-input',
     '.claude-textarea',
     '.cl-textarea',
-    
+
     // Qwen
     '.qwen-input',
     '.qwen-textarea',
     '.qwen-chat-input',
-    
+
     // Generic web selectors that might match various chat inputs
     'textarea.chat-input',
     'div[role="textbox"]',
@@ -286,7 +295,7 @@ function setupChatboxRTL() {
     'div[aria-label*="message"]',
     'div[contenteditable="true"][aria-label*="message"]',
     'div[contenteditable="true"][aria-label*="chat"]',
-    '.message-input'
+    '.message-input',
   ];
 
   const chatboxes = document.querySelectorAll(selectors.join(','));
@@ -296,17 +305,17 @@ function setupChatboxRTL() {
       chatbox.style.textAlign = 'right';
       chatbox.setAttribute('dir', 'auto');
 
-      const handleInput = (e) => {
+      const handleInput = e => {
         const target = e.target;
         // Skip direction change if in a code block (using ```code``` format)
         const text = target.value || target.textContent;
         const isCodeBlock = text && (text.includes('```') || text.includes('`'));
-        
+
         if (isCodeBlock) {
           // If it's a code block, we don't want to change the direction
           return;
         }
-        
+
         if (isPersian(text)) {
           target.style.direction = 'rtl';
           target.style.textAlign = 'right';
@@ -318,7 +327,7 @@ function setupChatboxRTL() {
 
       // Handle both input and contenteditable
       chatbox.addEventListener('input', handleInput);
-      
+
       // For contenteditable elements
       if (chatbox.getAttribute('contenteditable') === 'true') {
         chatbox.addEventListener('keyup', handleInput);
@@ -329,54 +338,54 @@ function setupChatboxRTL() {
 
 // Function to observe dynamic content
 function observeDynamicContent() {
-  const observer = new MutationObserver((mutations) => {
-    mutations.forEach((mutation) => {
-      mutation.addedNodes.forEach((node) => {
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
         if (node.nodeType === Node.ELEMENT_NODE) {
           applyTextDirection(node);
-          
+
           // Check for new chat inputs that might be dynamically added
           const chatboxSelectors = [
             // ChatGPT
             'textarea#prompt-textarea',
             'div[contenteditable="true"]',
-            
+
             // DeepSeek
             'textarea',
             'input[type="text"]',
             '.cm-content',
             '.cm-line',
-            
+
             // Perplexity.ai
             '.ProseMirror',
             '.perplexity-input',
             '.input-wrapper textarea',
             'div[role="textbox"]',
-            
+
             // X.com/Grok
             '.public-DraftEditor-content',
             '.DraftEditor-editorContainer',
             'div[data-testid="tweetTextarea_0"]',
-            
+
             // grok.com/chat
             '.grok-chat-input',
             '.grok-input-field',
-            
+
             // Google AI Studio
             '.gemini-chat-input',
             '.gemini-text-entry',
             '.rta__textarea',
-            
+
             // Claude.ai
             '.claude-input',
             '.claude-textarea',
             '.cl-textarea',
-            
+
             // Qwen
             '.qwen-input',
             '.qwen-textarea',
             '.qwen-chat-input',
-            
+
             // Generic web selectors
             'textarea.chat-input',
             'div[role="textbox"]',
@@ -392,9 +401,9 @@ function observeDynamicContent() {
             'div[aria-label*="message"]',
             'div[contenteditable="true"][aria-label*="message"]',
             'div[contenteditable="true"][aria-label*="chat"]',
-            '.message-input'
+            '.message-input',
           ];
-          
+
           const chatboxes = node.querySelectorAll(chatboxSelectors.join(','));
           chatboxes.forEach(chatbox => {
             if (chatbox) {
@@ -409,6 +418,6 @@ function observeDynamicContent() {
   observer.observe(document.body, {
     childList: true,
     subtree: true,
-    characterData: true
+    characterData: true,
   });
 }

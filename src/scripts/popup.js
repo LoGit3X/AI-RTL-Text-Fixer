@@ -26,9 +26,6 @@ document.addEventListener('DOMContentLoaded', function () {
       mainToggle.classList.toggle('disabled', !isEnabled);
 
       chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
-        // Update UI
-        platformToggles.forEach(toggle => (toggle.disabled = !isEnabled));
-
         // Update tab
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           if (tabs[0]) {
@@ -85,10 +82,8 @@ document.addEventListener('DOMContentLoaded', function () {
       const platformStates = result.platformStates || {};
       platformToggles.forEach(toggle => {
         const domain = toggle.dataset.domain;
-        // Default to enabled if not set
-        toggle.checked = platformStates[domain] !== false;
-        // Disable toggle if main extension is disabled
-        toggle.disabled = !isEnabled;
+        // Default to disabled if not set
+        toggle.checked = platformStates[domain] === true;
       });
     });
 
@@ -96,24 +91,18 @@ document.addEventListener('DOMContentLoaded', function () {
     mainToggle.addEventListener('change', function () {
       const isEnabled = mainToggle.checked;
 
-      // Save main state and update UI
-      if (isChromeAPIAvailable()) {
-        chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
-          // Update UI
-          platformToggles.forEach(toggle => (toggle.disabled = !isEnabled));
-
-          // Update tab
-          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-            if (tabs[0]) {
-              chrome.tabs.sendMessage(tabs[0].id, {
-                action: 'toggleExtension',
-                enabled: isEnabled,
-              });
-              chrome.tabs.reload(tabs[0].id);
-            }
-          });
+      chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
+        // Update tab
+        chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+          if (tabs[0]) {
+            chrome.tabs.sendMessage(tabs[0].id, {
+              action: 'toggleExtension',
+              enabled: isEnabled,
+            });
+            chrome.tabs.reload(tabs[0].id);
+          }
         });
-      }
+      });
     });
 
     // Handle individual platform toggles
@@ -135,6 +124,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     domain,
                     enabled: isEnabled,
                   });
+                  chrome.tabs.reload(tabs[0].id);
                 }
               });
             });
@@ -143,12 +133,26 @@ document.addEventListener('DOMContentLoaded', function () {
       });
     });
 
-    // Handle platform info clicks
-    document.querySelectorAll('.platforms__info').forEach(info => {
-      info.addEventListener('click', function () {
-        const domain = this.closest('.platforms__item').querySelector('.toggle__input').dataset.domain;
-        if (isChromeAPIAvailable()) {
-          chrome.tabs.create({ url: `https://${domain}` });
+    // Handle platform item clicks
+    document.querySelectorAll('.platforms__item').forEach(item => {
+      item.addEventListener('click', function (event) {
+        // Ignore clicks on the info button
+        if (event.target.closest('.platforms__info')) {
+          const domain = this.querySelector('.toggle__input').dataset.domain;
+          if (isChromeAPIAvailable()) {
+            chrome.tabs.create({ url: `https://${domain}` });
+          }
+          return;
+        }
+
+        // Toggle the checkbox
+        const checkbox = this.querySelector('.toggle__input');
+        if (!checkbox.disabled) {
+          checkbox.checked = !checkbox.checked;
+
+          // Trigger the change event
+          const changeEvent = new Event('change');
+          checkbox.dispatchEvent(changeEvent);
         }
       });
     });
