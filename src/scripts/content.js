@@ -1,19 +1,22 @@
 // Check if extension is enabled for current domain
 function checkIfEnabled(callback) {
   const currentDomain = window.location.hostname;
-  chrome.storage.local.get(['extensionEnabled', 'platformStates'], result => {
-    const isExtensionEnabled = result.extensionEnabled !== false;
-    const platformStates = result.platformStates || {};
-    const isPlatformEnabled = platformStates[currentDomain] === true;
+  chrome.storage.sync.get(['fontEnabled_' + currentDomain], fontResult => {
+    const isFontEnabled = fontResult['fontEnabled_' + currentDomain] !== false;
+    chrome.storage.local.get(['extensionEnabled', 'platformStates'], result => {
+      const isExtensionEnabled = result.extensionEnabled !== false;
+      const platformStates = result.platformStates || {};
+      const isPlatformEnabled = platformStates[currentDomain] === true;
 
-    callback(isExtensionEnabled && isPlatformEnabled);
+      callback(isExtensionEnabled && isPlatformEnabled, isFontEnabled);
+    });
   });
 }
 
 // Initialize extension
-checkIfEnabled(isEnabled => {
+checkIfEnabled((isEnabled, isFontEnabled) => {
   if (isEnabled) {
-    applyTextDirection(document.body);
+    applyTextDirection(document.body, isFontEnabled);
     setupChatboxRTL();
     observeDynamicContent();
   }
@@ -23,9 +26,9 @@ checkIfEnabled(isEnabled => {
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message.action === 'toggleExtension') {
     if (message.enabled) {
-      checkIfEnabled(isEnabled => {
+      checkIfEnabled((isEnabled, isFontEnabled) => {
         if (isEnabled) {
-          applyTextDirection(document.body);
+          applyTextDirection(document.body, isFontEnabled);
           setupChatboxRTL();
           observeDynamicContent();
         }
@@ -38,9 +41,9 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     const currentDomain = window.location.hostname;
     if (currentDomain.includes(message.domain)) {
       if (message.enabled) {
-        checkIfEnabled(isEnabled => {
+        checkIfEnabled((isEnabled, isFontEnabled) => {
           if (isEnabled) {
-            applyTextDirection(document.body);
+            applyTextDirection(document.body, isFontEnabled);
             setupChatboxRTL();
             observeDynamicContent();
           }
@@ -53,8 +56,26 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   }
 });
 
-// Function to apply RTL/LTR direction
-function applyTextDirection(element) {
+// Function to apply RTL/LTR direction and Vazirmatn font
+function applyTextDirection(element, isFontEnabled) {
+  // Add Vazirmatn font to the page only if font is enabled
+  if (isFontEnabled) {
+    const style = document.createElement('style');
+    style.textContent = `
+      @font-face {
+        font-family: 'Vazirmatn';
+        src: url('chrome-extension://${chrome.runtime.id}/src/assets/fonts/vazirmatn/Vazirmatn[wght].woff2') format('woff2 supports variations'),
+             url('chrome-extension://${chrome.runtime.id}/src/assets/fonts/vazirmatn/Vazirmatn[wght].woff2') format('woff2-variations');
+        font-weight: 100 900;
+        font-style: normal;
+        font-display: swap;
+      }
+      * {
+        font-family: 'Vazirmatn', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif !important;
+      }
+    `;
+    document.head.appendChild(style);
+  }
   // First handle code blocks - always keep them LTR regardless of content
   const codeElements = element.querySelectorAll(
     'pre, code, .code-block, [class*="code"], [class*="hljs"], [class*="language-"], div[class*="Code"], [data-language], .CodeMirror, [role="code"], [class*="syntaxHighlighter"], .token, .codejar'

@@ -5,7 +5,9 @@
   --color-primary-active: #2850a7;
   --color-secondary: #0062ff;
   --color-success: #8cd31a;
+  --success-color: #8cd31a;
   --color-danger: rgb(233, 73, 73);
+  --error-color: rgb(233, 73, 73);
 
   /* رنگ‌های متن */
   --color-text-primary: #333;
