@@ -1,0 +1,37 @@
+:root {
+  /* رنگ‌های اصلی */
+  --color-primary: #4285f4;
+  --color-primary-hover: #3367d6;
+  --color-primary-active: #2850a7;
+  --color-secondary: #0062ff;
+  --color-success: #8cd31a;
+  --color-danger: rgb(233, 73, 73);
+
+  /* رنگ‌های متن */
+  --color-text-primary: #333;
+  --color-text-secondary: #666;
+
+  /* رنگ‌های پس‌زمینه */
+  --color-background: #f9f9f9;
+  --color-background-card: white;
+
+  /* رنگ‌های عناصر UI */
+  --color-border: #ddd;
+  --color-toggle-inactive: #ccc;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+}
+
+[data-theme='dark'] {
+  /* رنگ‌های متن */
+  --color-text-primary: #e0e0e0;
+  --color-text-secondary: #a0a0a0;
+
+  /* رنگ‌های پس‌زمینه */
+  --color-background: #1a1a1a;
+  --color-background-card: #2d2d2d;
+
+  /* رنگ‌های عناصر UI */
+  --color-border: #404040;
+  --color-toggle-inactive: #666;
+  --color-shadow: rgba(0, 0, 0, 0.3);
+}

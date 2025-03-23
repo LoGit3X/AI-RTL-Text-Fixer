@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AI Chat Text Direction Fixer",
+  "name": "ChatBot RTL",
   "version": "1.0",
   "description": "Applies correct text direction for Persian and English in various AI chat platforms",
   "icons": {
