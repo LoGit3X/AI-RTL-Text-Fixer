@@ -1,4 +1,5 @@
 @import url('./variables.css');
+@import url('../assets/fonts/vazirmatn.css');
 
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -74,6 +75,60 @@ body {
 
 .theme-toggle__icon {
   display: none;
+}
+
+.font-toggle {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  margin-right: 8px;
+}
+
+.font-toggle:hover {
+  background-color: var(--color-border);
+}
+
+.font-toggle__icon {
+  color: var(--color-danger);
+  transition: color 0.2s;
+}
+
+.font-toggle.active .font-toggle__icon,
+.font-toggle--active .font-toggle__icon {
+  color: var(--color-success);
+}
+
+.font-toggle--active {
+  color: var(--success-color);
+}
+
+.font-toggle--active:hover {
+  color: var(--success-color);
+}
+
+.font-toggle--inactive {
+  color: var(--error-color);
+}
+
+.font-toggle--inactive:hover {
+  color: var(--error-color);
+}
+
+.platforms__actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.platforms__actions {
+  display: flex;
+  align-items: center;
 }
 
 .power-toggle {
@@ -233,6 +288,57 @@ input:checked + .switch__btn {
   box-shadow: 0 1px 3px var(--color-shadow);
   margin-bottom: 6px;
   transition: all 0.2s ease;
+}
+
+.platform__controls {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.font__switch {
+  position: relative;
+  display: inline-block;
+  width: 32px;
+  height: 18px;
+}
+
+.font__input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.font__slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--color-toggle-inactive);
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.font__slider:before {
+  position: absolute;
+  content: '';
+  height: 12px;
+  width: 12px;
+  left: 3px;
+  bottom: 3px;
+  background-color: var(--color-background-card);
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .font__slider {
+  background-color: var(--color-primary);
+}
+
+input:checked + .font__slider:before {
+  transform: translateX(14px);
 }
 
 .platforms__item:hover {

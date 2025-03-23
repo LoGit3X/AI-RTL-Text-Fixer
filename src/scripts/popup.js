@@ -3,13 +3,45 @@ function isChromeAPIAvailable() {
   return chrome.storage && chrome.storage.local && chrome.tabs;
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  // Get the main toggle switch and platform toggles
-  const mainToggle = document.getElementById('toggle-extension');
-  const platformToggles = document.querySelectorAll('.platforms__list input[type="checkbox"]');
+document.addEventListener('DOMContentLoaded', () => {
+  const platformList = document.getElementById('platform-list');
   const searchInput = document.getElementById('search-platforms');
-  const refreshButton = document.getElementById('refresh-page');
   const themeToggle = document.getElementById('theme-toggle');
+  const powerToggle = document.getElementById('toggle-extension');
+  const refreshButton = document.getElementById('refresh-page');
+  const fontToggles = document.querySelectorAll('.font-toggle');
+  const platformToggles = document.querySelectorAll('.platforms__list input[type="checkbox"]');
+
+  // Load theme and font settings from storage
+  chrome.storage.sync.get(['theme', 'extensionEnabled', 'fontSettings'], result => {
+    if (result.theme === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
+
+    if (result.extensionEnabled === false) {
+      powerToggle.classList.remove('enabled');
+      powerToggle.classList.add('disabled');
+    } else {
+      powerToggle.classList.add('enabled');
+      powerToggle.classList.remove('disabled');
+    }
+
+    // Initialize font toggle states
+    const fontSettings = result.fontSettings || {};
+    fontToggles.forEach(toggle => {
+      const domain = toggle.dataset.domain;
+      if (fontSettings[domain]) {
+        toggle.classList.add('font-toggle--active');
+        toggle.classList.remove('font-toggle--inactive');
+      } else {
+        toggle.classList.add('font-toggle--inactive');
+        toggle.classList.remove('font-toggle--active');
+      }
+    });
+  });
+
+  // Get the main toggle switch
+  const mainToggle = document.getElementById('toggle-extension');
 
   // Load extension state and update power toggle button
   if (isChromeAPIAvailable()) {
@@ -25,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function () {
       mainToggle.classList.toggle('enabled', isEnabled);
       mainToggle.classList.toggle('disabled', !isEnabled);
 
-      chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
+      chrome.storage.sync.set({ extensionEnabled: isEnabled }, function () {
         // Update tab
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           if (tabs[0]) {
@@ -42,7 +74,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // Load theme from storage
   if (isChromeAPIAvailable()) {
-    chrome.storage.local.get(['theme'], function (result) {
+    chrome.storage.sync.get(['theme'], function (result) {
       const theme = result.theme || 'dark';
       document.documentElement.setAttribute('data-theme', theme);
     });
@@ -56,7 +88,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Save theme to storage
     if (isChromeAPIAvailable()) {
-      chrome.storage.local.set({ theme: newTheme });
+      chrome.storage.sync.set({ theme: newTheme });
     }
   });
 
@@ -91,7 +123,7 @@ document.addEventListener('DOMContentLoaded', function () {
     mainToggle.addEventListener('change', function () {
       const isEnabled = mainToggle.checked;
 
-      chrome.storage.local.set({ extensionEnabled: isEnabled }, function () {
+      chrome.storage.sync.set({ extensionEnabled: isEnabled }, function () {
         // Update tab
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
           if (tabs[0]) {
@@ -101,6 +133,36 @@ document.addEventListener('DOMContentLoaded', function () {
             });
             chrome.tabs.reload(tabs[0].id);
           }
+        });
+      });
+    });
+
+    // Handle font toggle clicks
+    fontToggles.forEach(toggle => {
+      toggle.addEventListener('click', function (event) {
+        // Stop event propagation to parent elements
+        event.stopPropagation();
+
+        const domain = this.dataset.domain;
+        const isActive = this.classList.contains('font-toggle--active');
+
+        // Toggle active state
+        if (isActive) {
+          this.classList.remove('font-toggle--active');
+          this.classList.add('font-toggle--inactive');
+        } else {
+          this.classList.remove('font-toggle--inactive');
+          this.classList.add('font-toggle--active');
+        }
+
+        // Save font settings
+        chrome.storage.sync.set({ ['fontEnabled_' + domain]: !isActive }, function () {
+          // Update tab
+          chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
+            if (tabs[0]) {
+              chrome.tabs.reload(tabs[0].id);
+            }
+          });
         });
       });
     });
