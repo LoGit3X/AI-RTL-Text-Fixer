@@ -1,120 +1,168 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>AI Chat Text Direction Fixer</title>
+    <title>ChatBot RTL</title>
     <link rel="stylesheet" href="../styles/popup.css" />
   </head>
   <body>
-    <h1>AI Chat Text Direction Fixer</h1>
-
-    <div class="toggle-container">
-      <span class="toggle-label">Enable Extension</span>
-      <label class="toggle">
-        <input type="checkbox" id="toggle-extension" checked />
-        <span class="slider"></span>
+    <header class="popup__header">
+      <div class="popup__header-left">
+        <img src="../icons/icon19.png" alt="Logo" class="popup__header-logo" />
+        <span class="popup__header-title">ChatBot RTL</span>
+      </div>
+      <div class="popup__header-actions">
+        <button id="theme-toggle" class="theme-toggle">
+          <svg class="theme-toggle__icon theme-toggle__icon--sun" height="24" viewBox="0 0 24 24" width="24">
+            <path
+              fill="currentColor"
+              d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0-.39.39-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0 .39-.39.39-1.03 0-1.41l-1.06-1.06zm1.06-10.96c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06zM7.05 18.36c.39-.39.39-1.03 0-1.41-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06z"
+            />
+          </svg>
+          <svg class="theme-toggle__icon theme-toggle__icon--moon" height="24" viewBox="0 0 24 24" width="24">
+            <path
+              fill="currentColor"
+              d="M9.37,5.51C9.19,6.15,9.1,6.82,9.1,7.5c0,4.08,3.32,7.4,7.4,7.4c0.68,0,1.35-0.09,1.99-0.27C17.45,17.19,14.93,19,12,19 c-3.86,0-7-3.14-7-7C5,9.07,6.81,6.55,9.37,5.51z M12,3c-4.97,0-9,4.03-9,9s4.03,9,9,9s9-4.03,9-9c0-0.46-0.04-0.92-0.1-1.36 c-0.98,1.37-2.58,2.26-4.4,2.26c-2.98,0-5.4-2.42-5.4-5.4c0-1.81,0.89-3.42,2.26-4.4C12.92,3.04,12.46,3,12,3L12,3z"
+            />
+          </svg>
+        </button>
+        <a href="https://github.com/LoGit3X/AI-RTL-Text-Fixer" target="_blank" class="popup__header-github">
+          <svg height="24" viewBox="0 0 16 16" width="24">
+            <path
+              fill="currentColor"
+              d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"
+            ></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <div class="toggle">
+      <span class="toggle__label">Enable Extension</span>
+      <label class="toggle__switch">
+        <input type="checkbox" id="toggle-extension" class="toggle__input" checked />
+        <span class="toggle__slider switch__btn"></span>
       </label>
     </div>
-
-    <button class="refresh-button" id="refresh-page">
-      <svg viewBox="0 0 24 24">
+    <button class="refresh" id="refresh-page">
+      <svg class="refresh__icon" viewBox="0 0 24 24">
         <path
           d="M17.65 6.35A7.958 7.958 0 0012 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18c-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"
         />
       </svg>
-      Refresh Page
+      <span class="refresh__text">Refresh Page</span>
     </button>
-
     <div class="platforms">
-      <div class="platforms-title">
-        <span>Supported Platforms</span>
-        <input type="text" class="search-box" placeholder="Search platforms..." id="search-platforms" />
+      <div class="platforms__header">
+        <span class="platforms__title">Search</span>
+        <input type="text" class="platforms__search" placeholder="Search platforms..." id="search-platforms" />
       </div>
-      <ul class="platform-list" id="platform-list">
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">ChatGPT</span>
-            <span class="platform-domain">chat.openai.com</span>
+      <ul class="platforms__list" id="platform-list">
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/chatGpticon.png" alt="ChatGPT" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">ChatGPT</span>
+              <span class="platforms__domain">chat.openai.com</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="chat.openai.com" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="chat.openai.com" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">DeepSeek Chat</span>
-            <span class="platform-domain">deepseek.com</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/deepseek-icon.jpg" alt="DeepSeek" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">DeepSeek Chat</span>
+              <span class="platforms__domain">deepseek.com</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="deepseek.com" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="chat.deepseek.com" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Perplexity</span>
-            <span class="platform-domain">perplexity.ai</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/Perplexity-icon.png" alt="Perplexity" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Perplexity</span>
+              <span class="platforms__domain">perplexity.ai</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="perplexity.ai" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="perplexity.ai" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Grok (X/Twitter)</span>
-            <span class="platform-domain">x.com/i/grok</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/gork-icon.png" alt="Grok" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Grok (X/Twitter)</span>
+              <span class="platforms__domain">x.com/i/grok</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="x.com" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="x.com" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Grok</span>
-            <span class="platform-domain">grok.com</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/gork-icon.png" alt="Grok" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Grok</span>
+              <span class="platforms__domain">grok.com</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="grok.com" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="grok.com" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Google AI Studio</span>
-            <span class="platform-domain">aistudio.google.com</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/google-ai-studio-icon.png" alt="Google AI" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Google AI Studio</span>
+              <span class="platforms__domain">aistudio.google.com</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="aistudio.google.com" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="aistudio.google.com" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Claude</span>
-            <span class="platform-domain">claude.ai</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/claude-icon.png" alt="Claude" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Claude</span>
+              <span class="platforms__domain">claude.ai</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="claude.ai" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="claude.ai" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
-        <li class="platform-item">
-          <div>
-            <span class="platform-name">Qwen</span>
-            <span class="platform-domain">chat.qwenlm.ai</span>
+        <li class="platforms__item">
+          <div class="platforms__item-content">
+            <img src="../assets/qwen-icon.jpg" alt="Qwen" class="platforms__icon" />
+            <div class="platforms__info">
+              <span class="platforms__name">Qwen</span>
+              <span class="platforms__domain">chat.qwenlm.ai</span>
+            </div>
           </div>
-          <label class="toggle">
-            <input type="checkbox" data-domain="chat.qwenlm.ai" checked />
-            <span class="slider"></span>
+          <label class="toggle__switch">
+            <input type="checkbox" class="toggle__input" data-domain="chat.qwenlm.ai" checked />
+            <span class="toggle__slider"></span>
           </label>
         </li>
       </ul>
     </div>
-
-    <div class="footer">AI Chat Text Direction Fixer - v1.0</div>
-
+    <div class="popup__footer">ChatBot RTL - v1.0</div>
     <script src="../scripts/popup.js"></script>
   </body>
 </html>
