@@ -76,6 +76,31 @@ body {
   display: none;
 }
 
+.power-toggle {
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-primary);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.power-toggle:hover {
+  background-color: var(--color-border);
+}
+
+.power-toggle.enabled {
+  color: #4caf50;
+}
+
+.power-toggle.disabled {
+  color: #f44336;
+}
+
 .theme-toggle__icon--sun {
   display: block;
 }
@@ -170,11 +195,12 @@ input:checked + .switch__btn {
 }
 .platforms__search {
   width: 90%;
+  height: 20px;
   padding: 6px 8px;
   border: 1px solid var(--color-border);
   border-radius: 6px;
   margin-bottom: 8px;
-  font-size: 11px;
+  font-size: 13px;
   background-color: var(--color-background);
   color: var(--color-text-primary);
   transition: all 0.2s ease;
