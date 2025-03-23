@@ -1,5 +1,7 @@
 # 🌐 AI Chat Text Direction Fixer
 
+![Image](https://github.com/user-attachments/assets/49f2acdc-60be-473f-abe4-bf00613acd98)
+
 <div align="center">
   <img src="https://img.shields.io/badge/Chrome-Extension-blue?logo=google-chrome&logoColor=white" alt="Chrome Extension">
   <img src="https://img.shields.io/badge/Version-1.0.0-green" alt="Version">
@@ -155,8 +157,8 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 </div>
 
 
-![Image](https://github.com/user-attachments/assets/e8744e95-50a6-4227-8db5-dba420b1473c)
 
+![Image](https://github.com/user-attachments/assets/49f2acdc-60be-473f-abe4-bf00613acd98)
 
 این افزونه کروم به شما کمک می‌کنه تا جهت متن‌های فارسی و انگلیسی رو به‌صورت خودکار توی Deepseek تنظیم کنید. برای مثال، وقتی متن فارسی دارید، به‌طور خودکار راست‌چین میشه و وقتی متن انگلیسی دارید، چپ‌چین میشه ، همچنین توی چت باکس DeepSeek وقتی فارسی مینویسید از راست به چپ مینویسه!
 
